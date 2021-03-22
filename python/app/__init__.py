@@ -2,8 +2,8 @@ from flask import Flask
 from flask_cors import CORS
 from flask_restful import Api
 
-from .models import db
-from .controllers import routes
+from app.models import db
+from app.controllers import routes
 
 app = Flask(__name__)
 api = Api(app)
