@@ -9,19 +9,30 @@ class ClientController(Resource):
     def get(self, id=""):
         print(request.url_rule)
 
-        if str(request.url_rule) == "/api/clients":
-
             # client = Client.objects().get(id="6061ab85c4736bed637d552c")
             # body = request.json
             # client = Client.objects().from_json(body)
 
             # client = Client.objects().exclude('id').to_json()
+
+        if str(request.url_rule) == "/api/clients":
             clients = Client.findAll()
 
             result = {
                 'message': "liste de tout les clients",
                 'success': True,
                 'results': clients
+            }
+
+            return jsonify(result)
+
+        if str(request.url_rule) == "/api/client/<string:id>":
+            client = Client.findById(id)
+
+            result = {
+                'message': f"data client {client['id']}",
+                'success': True,
+                'result': client
             }
 
             return jsonify(result)
