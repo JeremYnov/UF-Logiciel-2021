@@ -1,4 +1,4 @@
-from flask import Response, request
+from flask import Response, request, jsonify
 from flask_restful import Resource
 
 import json
@@ -21,16 +21,23 @@ class ClientController(Resource):
 
         return Response(client.to_json(), mimetype="application/json", status=200)
 
-    def post(self):
-        # client = Client({"firstName":"Louis", "lastName":"ardilly"})
+    def post(self, id):
         body = request.json
-        print(type(body))
-        print(type(json.dumps(body)))
 
-        client = Client.from_json(json.dumps(body), True)
+        print(request.url_rule)
+
+        if request.url_rule == '/api/client/new':
+            client = Client.createClient(body)
+
+            return Response(client.to_json(), mimetype="application/json", status=200)
+
+        # elif request.url_rule == '/api/client/<int:id>/update':
 
 
-        client.save()
+        #     message = jsonify(error=True)
+        #     print(message)
 
-        return Response(client.to_json(), mimetype="application/json", status=200)
 
+        #     return Response(message, mimetype="application/json",status=200)
+        
+        return Response(status=404)
