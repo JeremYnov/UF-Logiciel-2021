@@ -32,14 +32,21 @@ class Client(db.Document):
         return results
 
     @staticmethod
-    def findById(body):
+    def findById(id):
         try:
-            client = Client.from_json(json.dumps(body), True)
-            client.save()
+            client = Client.objects.get(id=id)
+
+            data = {}
+            data['id'] = str(client.id)
+            data['firstName'] = client.firstName
+            data['lastName'] = client.lastName
+            data['email'] = client.email
+            data['creation'] = client.creation.strftime('%d/%m/%Y')
+
         except Exception as error:
             print(error)
 
-        return client
+        return data
 
 
     @staticmethod
