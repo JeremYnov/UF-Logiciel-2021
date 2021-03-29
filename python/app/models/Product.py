@@ -62,8 +62,8 @@ class Product(db.Document):
     @staticmethod
     def updateProduct(id, body):
         try:
-            product = Product.objects().get(id=str(id))
-            print(body)
+            product = Product.objects().get(id=str(id)).update()
+            # product.price = body["price"]
             product.from_json(json.dumps(body), False)
             product.save()
             
