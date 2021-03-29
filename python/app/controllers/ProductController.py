@@ -11,13 +11,26 @@ class ProductController(Resource):
         if str(request.url_rule) == '/api/product/<string:id>':
 
             product = Product.getProduct(id)
-            print(product)
-            return jsonify(product)
+            result = {
+                "message": 'recuperation du produit' + str(product["name"]),
+                "success": True,
+                "count" : 1,
+                "result": product
+            }
+
+            return jsonify(result)
         
         elif str(request.url_rule) == '/api/products':
 
             product = Product.getAllProducts()
-            return jsonify(product)
+            result = {
+                "message": 'recuperation des produits',
+                "success": True,
+                "count" : len(product),
+                "results": product
+            }
+
+            return jsonify(result)
         
         return Response(status=404)
 
