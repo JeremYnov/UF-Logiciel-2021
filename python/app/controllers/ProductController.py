@@ -14,7 +14,7 @@ class ProductController(Resource):
             print(product)
             return jsonify(product)
         
-        elif str(request.url_rule) == '/api/products/':
+        elif str(request.url_rule) == '/api/products':
 
             product = Product.getAllProducts()
             return jsonify(product)
