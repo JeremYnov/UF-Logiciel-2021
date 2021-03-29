@@ -1,6 +1,8 @@
 <template>
-  <section class="client">
-
+  <section class="add">
+      <form action="">
+          <input type="text">
+      </form>
   </section>
 </template>
 
