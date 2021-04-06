@@ -40,18 +40,15 @@ class ClientController(Resource):
         return Response(status=404)
 
     def post(self, id=""):
+        print(request.url_rule)
         body = request.json
 
         if str(request.url_rule) == '/api/client/new':
-            client = Client.createClient(body)
+            client = Client.create(body)
 
             return Response(client.to_json(), mimetype="application/json", status=200)
 
-        if str(request.url_rule) == '/api/client/<int:id>/update':
+        if str(request.url_rule) == '/api/client/<string:id>/update':
+            client = Client.update(id, body)
 
-            message = jsonify(error=True)
-            print(message)
-
-            return message
-        
         return Response(status=404)
