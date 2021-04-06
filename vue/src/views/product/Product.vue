@@ -1,5 +1,5 @@
 <template>
-  <section class="products">
+  <section class="product">
     <div v-if="errored" class="error">
       <p>
         Nous sommes désolés, nous ne sommes pas en mesure de récupérer ces
@@ -20,12 +20,12 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="product in info" :key="product.id">
-            <th scope="row">{{product.id}}</th>
-            <td>{{product.name}}</td>
-            <td>{{product.stock}}</td>
-            <td>{{product.picture}}</td>
-            <td>{{product.price}}€</td>
+          <tr>
+            <td>{{ info.id }}</td>
+            <td>{{ info.name }}</td>
+            <td>{{ info.stock }}</td>
+            <td>{{ info.picture }}</td>
+            <td>{{ info.price }}</td>
           </tr>
         </tbody>
       </table>
@@ -39,22 +39,23 @@ import axios from "axios";
 export default {
   data() {
     return {
+      id: this.$route.params.id,
       info: null,
       errored: false,
       loading: true,
-      product:{
-          name:null,
-          stock:null,
-          picture:null,
-          invoiceReference:null,
-      }
+      product: {
+        name: null,
+        stock: null,
+        picture: null,
+        invoiceReference: null,
+      },
     };
   },
   mounted: function () {
-    axios
-      .get("/api/products")
+    this.id = axios
+      .get("/api/product/" + this.id)
       .then((response) => {
-        this.info = response.data.results;
+        this.info = response.data.result;
       })
       .catch((error) => {
         console.log(error);
@@ -68,5 +69,4 @@ export default {
 </script>
 
 <style>
-
 </style>

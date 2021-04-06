@@ -13,19 +13,19 @@
         <thead class="table-dark">
           <tr>
             <th scope="col">#</th>
-            <th scope="col">Firstame</th>
+            <th scope="col">Firstname</th>
             <th scope="col">Lastname</th>
             <th scope="col">Mail</th>
             <th scope="col">Creation date</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(client, index) in info" :key="client.id">
-            <th scope="row">{{index}}</th>
-            <td>{{client.firstName}}</td>
-            <td>{{client.lastName}}</td>
-            <td>{{client.email}}</td>
-            <td>{{client.creation}}</td>
+          <tr v-for="client in info" :key="client.id">
+            <th scope="row">{{ client.id }}</th>
+            <td>{{ client.firstName }}</td>
+            <td>{{ client.lastName }}</td>
+            <td>{{ client.email }}</td>
+            <td>{{ client.creation }}</td>
           </tr>
         </tbody>
       </table>
@@ -39,6 +39,7 @@ import axios from "axios";
 export default {
   data() {
     return {
+      id: this.$route.params.id,
       info: null,
       errored: false,
       loading: true,
