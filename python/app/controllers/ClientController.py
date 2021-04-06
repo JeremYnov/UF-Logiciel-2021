@@ -7,14 +7,6 @@ from app.models.Client import Client
 
 class ClientController(Resource):
     def get(self, id=""):
-        print(request.url_rule)
-
-            # client = Client.objects().get(id="6061ab85c4736bed637d552c")
-            # body = request.json
-            # client = Client.objects().from_json(body)
-
-            # client = Client.objects().exclude('id').to_json()
-
         if str(request.url_rule) == "/api/clients":
             clients = Client.findAll()
 
@@ -37,18 +29,52 @@ class ClientController(Resource):
 
             return jsonify(result)
 
-        return Response(status=404)
+        result = {
+            'message': f"data client {client['id']} n'existe pas",
+            'success': False,
+        }
 
-    def post(self, id=""):
-        print(request.url_rule)
+        return jsonify(result)
+
+    def post(self):
         body = request.json
 
-        if str(request.url_rule) == '/api/client/new':
-            client = Client.create(body)
+        client = Client.create(body)
 
-            return Response(client.to_json(), mimetype="application/json", status=200)
+        if client != 500:
+            result = {
+                'message': f"data client created",
+                'success': True,
+                'result': client
+            }
 
-        if str(request.url_rule) == '/api/client/<string:id>/update':
-            client = Client.update(id, body)
+            return jsonify(result)
 
-        return Response(status=404)
+        result = {
+            'message': f"data client not create",
+            'success': False,
+        }
+
+        return jsonify(result)
+        
+
+    def put(self, id=""):
+        body = request.json
+        
+        updated = Client.update(id, body)
+
+        if updated != 0:
+            result = {
+                'message': f"data client {id} update",
+                'success': True,
+                'updatec': updated
+            }
+
+            return jsonify(result)
+
+        result = {
+            'message': f"data client {id} not update",
+            'success': False,
+        }
+
+        return jsonify(result)
