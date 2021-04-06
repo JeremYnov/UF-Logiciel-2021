@@ -13,11 +13,27 @@
         <thead class="table-dark">
           <tr>
             <th v-for="key in keys" :key="key" scope="col">{{ key }}</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="info in infos" :key="info.id">
-            <td v-for="(value, key) in info" :key="key">{{ value }}</td>
+            <td v-for="(value, key) in info" :key="key">
+              <router-link
+                v-bind:to="{ name: pathName, params: { id: info.id } }"
+              >
+                {{ value }}</router-link
+              >
+            </td>
+
+            <td>
+              <router-link
+                v-bind:to="{ name: pathName, params: { id: info.id } }"
+                ><i class="fas fa-edit"></i
+              ></router-link>
+              |
+              <i class="far fa-trash-alt" @click="deleteElement(info.id)"></i>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -30,7 +46,7 @@ import axios from "axios";
 export default {
   data() {
     return {
-      path: this.$route.path,
+      pathName: null,
       infos: null,
       keys: null,
       errored: false,
@@ -38,13 +54,15 @@ export default {
     };
   },
   mounted: function () {
+      console.log(this.deleteElement)
     axios
       .get(`/api${this.$route.path}`)
       .then((response) => {
         console.log(this.$route);
         this.infos = response.data.results;
         this.keys = Object.keys(Object.assign({}, ...this.infos));
-        console.log(this.keys);
+        this.pathName = response.data.unitName;
+        console.log(this.$route);
       })
       .catch((error) => {
         console.log(error);
@@ -54,8 +72,29 @@ export default {
         this.loading = false;
       });
   },
+  methods:{
+    
+    // async deleteElement(id) {
+      
+    //   axios
+    //   .delete()
+    //   .catch((error) => {
+    //     console.log(error);
+    //     this.errored = true;
+    //   })
+    //   .finally(() => {
+    //     this.loading = false;
+    //   });
+    // },
+  },
 };
 </script>
 
-<style>
+<style lang="scss">
+.fa-trash-alt {
+  color: rgb(170, 4, 4);
+}
+thead tr th{
+  text-transform: capitalize;
+}
 </style>
