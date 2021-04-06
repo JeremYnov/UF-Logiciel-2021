@@ -27,6 +27,7 @@ const routes = [
     path: '/client/:id',
     name: 'Client',
     component: () => import('../views/display-unit/DisplayUnit.vue')
+    
   },
   {
     path: '/products',
@@ -36,6 +37,16 @@ const routes = [
   {
     path: '/product/:id',
     name: 'Product',
+    component: () => import('../views/display-unit/DisplayUnit.vue')
+  },
+  {
+    path: '/invoices',
+    name: 'Invoices',
+    component: () => import('../views/display-all/DisplayAll.vue')
+  },
+  {
+    path: '/invoice/:id',
+    name: 'Invoice',
     component: () => import('../views/display-unit/DisplayUnit.vue')
   },
 ]
