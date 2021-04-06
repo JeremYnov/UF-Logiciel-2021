@@ -1,5 +1,5 @@
 <template>
-  <section class="products">
+  <section class="clients">
     <div v-if="errored" class="error">
       <p>
         Nous sommes désolés, nous ne sommes pas en mesure de récupérer ces
@@ -12,24 +12,16 @@
       <table class="table">
         <thead class="table-dark">
           <tr>
-            <th scope="col">#</th>
-            <th scope="col">Name</th>
-            <th scope="col">Stock</th>
-            <th scope="col">Picture</th>
-            <th scope="col">Price</th>
+            <th v-for="key in keys" :key="key" scope="col">{{ key }}</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="product in info" :key="product.id">
-            <th scope="row">{{product.id}}</th>
-            <td>{{product.name}}</td>
-            <td>{{product.stock}}</td>
-            <td>{{product.picture}}</td>
-            <td>{{product.price}}€</td>
+          <tr v-for="info in infos" :key="info.id">
+            <td v-for="(value, key) in info" :key="key">{{ value }}</td>
           </tr>
         </tbody>
       </table>
-      <div>{{ info }}</div>
+      <div>{{ infos }}</div>
     </div>
   </section>
 </template>
@@ -39,22 +31,21 @@ import axios from "axios";
 export default {
   data() {
     return {
-      info: null,
+      // id: this.$route.params.id,
+      infos: null,
+      keys: null,
       errored: false,
       loading: true,
-      product:{
-          name:null,
-          stock:null,
-          picture:null,
-          invoiceReference:null,
-      }
     };
   },
   mounted: function () {
     axios
-      .get("/api/products")
+      .get(`/api${this.$route.path}`)
       .then((response) => {
-        this.info = response.data.results;
+        console.log(this.$route)
+        this.infos = response.data.results;
+        this.keys = Object.keys(Object.assign({}, ...this.infos));
+        console.log(this.keys);
       })
       .catch((error) => {
         console.log(error);
@@ -68,5 +59,4 @@ export default {
 </script>
 
 <style>
-
 </style>

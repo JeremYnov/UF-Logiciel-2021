@@ -1,5 +1,5 @@
 <template>
-  <section class="product">
+  <section class="client">
     <div v-if="errored" class="error">
       <p>
         Nous sommes désolés, nous ne sommes pas en mesure de récupérer ces
@@ -12,20 +12,12 @@
       <table class="table">
         <thead class="table-dark">
           <tr>
-            <th scope="col">#</th>
-            <th scope="col">Name</th>
-            <th scope="col">Stock</th>
-            <th scope="col">Picture</th>
-            <th scope="col">Price</th>
+            <th v-for="(value, key) in info" :key="key">{{ key }}</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>{{ info.id }}</td>
-            <td>{{ info.name }}</td>
-            <td>{{ info.stock }}</td>
-            <td>{{ info.picture }}</td>
-            <td>{{ info.price }}</td>
+            <td v-for="(value, key) in info" :key="key">{{ value }}</td>
           </tr>
         </tbody>
       </table>
@@ -39,21 +31,15 @@ import axios from "axios";
 export default {
   data() {
     return {
-      id: this.$route.params.id,
+      keys: null,
       info: null,
       errored: false,
       loading: true,
-      product: {
-        name: null,
-        stock: null,
-        picture: null,
-        invoiceReference: null,
-      },
     };
   },
   mounted: function () {
-    this.id = axios
-      .get("/api/product/" + this.id)
+    axios
+      .get(`/api${this.$route.path}`)
       .then((response) => {
         this.info = response.data.result;
       })

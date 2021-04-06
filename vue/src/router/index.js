@@ -21,22 +21,22 @@ const routes = [
   {
     path: '/clients',
     name: 'Clients',
-    component: () => import('../views/client/Clients.vue')
+    component: () => import('../views/display-all/DisplayAll.vue')
   },
   {
     path: '/client/:id',
     name: 'Client',
-    component: () => import('../views/client/Client.vue')
+    component: () => import('../views/display-unit/DisplayUnit.vue')
   },
   {
     path: '/products',
     name: 'Products',
-    component: () => import('../views/product/Products.vue')
+    component: () => import('../views/display-all/DisplayAll.vue')
   },
   {
     path: '/product/:id',
     name: 'Product',
-    component: () => import('../views/product/Product.vue')
+    component: () => import('../views/display-unit/DisplayUnit.vue')
   },
 ]
 
