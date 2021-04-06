@@ -21,7 +21,6 @@
           </tr>
         </tbody>
       </table>
-      <div>{{ infos }}</div>
     </div>
   </section>
 </template>
@@ -31,7 +30,7 @@ import axios from "axios";
 export default {
   data() {
     return {
-      // id: this.$route.params.id,
+      path: this.$route.path,
       infos: null,
       keys: null,
       errored: false,
@@ -42,7 +41,7 @@ export default {
     axios
       .get(`/api${this.$route.path}`)
       .then((response) => {
-        console.log(this.$route)
+        console.log(this.$route);
         this.infos = response.data.results;
         this.keys = Object.keys(Object.assign({}, ...this.infos));
         console.log(this.keys);
