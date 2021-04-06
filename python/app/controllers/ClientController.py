@@ -93,13 +93,13 @@ class ClientController(Resource):
         if str(request.url_rule) == '/api/client/<string:id>/delete':
             client = Client.delete(id)
 
-            if not client:
-                result = {
-                "message": f"data client not delete",
-                "success": False
-                }
+            # if not client:
+            #     result = {
+            #         "message": f"data client not delete",
+            #         "success": False
+            #     }
 
-                return jsonify(result)
+            #     return jsonify(result)
 
             result = {
                 "message": f"data client {id} delete",

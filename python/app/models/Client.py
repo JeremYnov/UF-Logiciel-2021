@@ -27,7 +27,7 @@ class Client(db.Document):
                 results.append(data)
                 
         except Exception as error:
-            print(error)
+            client = None
 
         return results
 
@@ -44,7 +44,7 @@ class Client(db.Document):
             data['creation'] = client.creation.strftime('%d/%m/%Y')
 
         except Exception as error:
-            print(error)
+            client = None
 
         return data
 
@@ -54,9 +54,9 @@ class Client(db.Document):
         try:
             client = Client.from_json(json.dumps(body), True)
             client.save()
-            
+
         except Exception as error:
-            return 500
+            client = None
 
         return client
 
@@ -93,3 +93,14 @@ class Client(db.Document):
             return count
 
         return updated
+    
+    @staticmethod
+    def delete(id):
+        try:
+            client = Client.objects(id=id)
+            client.delete()
+            
+        except Exception as error:
+            client = None
+
+        return client
