@@ -54,34 +54,42 @@ class Client(db.Document):
         try:
             client = Client.from_json(json.dumps(body), True)
             client.save()
-
-            print(client.to_mongo())
+            
         except Exception as error:
-            print(error)
+            return 500
 
         return client
 
     @staticmethod
     def update(id, body):
+        updated = {}
+        count = 0
+
         try:
-            # print(body)
-            # client2 = Client.from_json(json.dumps(body))
-            # print(client2.to_json())
-        
-            client = Client.objects.get(id=id)
-            print(client.to_json())
+            firstName = Client.objects(id=id).update(firstName=body['firstName'])
+            updated['firstName'] = firstName
+            count += 1
 
-            
-            client = Client.objects(id=id).update(firstName=body['firstName'])
-            client = Client.objects(id=id).update(lastName=body['lastName'])
-            client = Client.objects(id=id).update(email=body['email'])
-
-
-       
-            print(client.to_json())
         except Exception as error:
-            print(error)
+            updated['firstName'] = 0
 
-            return 0
+        try:
+            lastName = Client.objects(id=id).update(lastName=body['lastName'])
+            updated['lastName'] = lastName
+            count += 1
 
-        return client
+        except Exception as error:
+            updated['lastName'] = 0
+
+        try:
+            email = Client.objects(id=id).update(email=body['email'])
+            updated['email'] = email
+            count += 1
+
+        except Exception as error:
+            updated['email'] = 0
+
+        if count == 0:
+            return count
+
+        return updated
