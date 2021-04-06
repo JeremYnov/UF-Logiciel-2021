@@ -62,12 +62,26 @@ class Product(db.Document):
     @staticmethod
     def updateProduct(id, body):
         try:
-            product = Product.objects().get(id=str(id)).update()
-            # product.price = body["price"]
-            product.from_json(json.dumps(body), False)
-            product.save()
+            product = Product.objects().get(id=id).update(name=body["name"])
+            product = Product.objects().get(id=id).update(stock=body["stock"])
+            product = Product.objects().get(id=id).update(picture=body["picture"])
+            product = Product.objects().get(id=id).update(price=body["price"])
+            print(product)
+            # product.save()
             
         except Exception as error:
+            print(error)
+
+        return product
+
+    @staticmethod
+    def deleteProduct(id):
+        try:
+            product = Product.objects().get(id=str(id))
+            product.delete()
+            
+        except Exception as error:
+            product = None
             print(error)
 
         return product

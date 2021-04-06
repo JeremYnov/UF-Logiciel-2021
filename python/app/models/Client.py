@@ -50,7 +50,7 @@ class Client(db.Document):
 
 
     @staticmethod
-    def createClient(body):
+    def create(body):
         try:
             client = Client.from_json(json.dumps(body), True)
             client.save()
@@ -58,5 +58,30 @@ class Client(db.Document):
             print(client.to_mongo())
         except Exception as error:
             print(error)
+
+        return client
+
+    @staticmethod
+    def update(id, body):
+        try:
+            # print(body)
+            # client2 = Client.from_json(json.dumps(body))
+            # print(client2.to_json())
+        
+            client = Client.objects.get(id=id)
+            print(client.to_json())
+
+            
+            client = Client.objects(id=id).update(firstName=body['firstName'])
+            client = Client.objects(id=id).update(lastName=body['lastName'])
+            client = Client.objects(id=id).update(email=body['email'])
+
+
+       
+            print(client.to_json())
+        except Exception as error:
+            print(error)
+
+            return 0
 
         return client

@@ -45,6 +45,23 @@ class ProductController(Resource):
         elif str(request.url_rule) == '/api/product/<string:id>/update':
 
             product = Product.updateProduct(id, body)
-            return Response(product.to_json(), mimetype="application/json",status=200)
+            print(product)
+            # return Response(product, mimetype="application/json",status=200)
         
+        return Response(status=404)
+
+    
+    def delete(self, id=""):
+        if str(request.url_rule) == '/api/product/<string:id>/delete':
+            
+            product = Product.deleteProduct(id)
+            result = {
+                "message": "la suppresion a bien été faites",
+                "success": True
+            }
+            if not product:
+                result["message"] = "le produit n'existe pas, il ne peut pas y avoir de suppresion"
+                result["success"] = False
+            return jsonify(result)
+
         return Response(status=404)
