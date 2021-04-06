@@ -15,7 +15,13 @@ class ProductController(Resource):
                 "message": 'recuperation du produit' + str(product["name"]),
                 "success": True,
                 "count" : 1,
-                "result": product
+                "result": product,
+                "form": {
+                    "name" : "text",
+                    "stock" : "number",
+                    "picture" : "file",
+                    "price" : "float"
+                }
             }
 
             return jsonify(result)
@@ -27,29 +33,28 @@ class ProductController(Resource):
                 "message": 'recuperation des produits',
                 "success": True,
                 "count" : len(product),
-                "results": product
+                "results": product,
+                "unitName": "Product"
             }
 
             return jsonify(result)
         
         return Response(status=404)
 
-    def post(self, id=""):
+    def post(self):
         body = request.json
 
-        if str(request.url_rule) == '/api/product/new':
+        product = Product.createProduct(body)
+        return Response(product.to_json(), mimetype="application/json", status=200)
 
-            product = Product.createProduct(body)
-            return Response(product.to_json(), mimetype="application/json", status=200)
-        
-        elif str(request.url_rule) == '/api/product/<string:id>/update':
+    def put(self, id=""):
+        body = request.json
 
-            product = Product.updateProduct(id, body)
-            print(product)
-            # return Response(product, mimetype="application/json",status=200)
-        
-        return Response(status=404)
-
+        product = Product.updateProduct(id, body)
+        result = {
+            "message" : f"le produit {id} a été modifié"
+        }
+        return jsonify(result)
     
     def delete(self, id=""):
         if str(request.url_rule) == '/api/product/<string:id>/delete':

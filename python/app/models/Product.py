@@ -66,8 +66,6 @@ class Product(db.Document):
             product = Product.objects().get(id=id).update(stock=body["stock"])
             product = Product.objects().get(id=id).update(picture=body["picture"])
             product = Product.objects().get(id=id).update(price=body["price"])
-            print(product)
-            # product.save()
             
         except Exception as error:
             print(error)
