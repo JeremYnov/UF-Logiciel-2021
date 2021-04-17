@@ -1,4 +1,5 @@
-import json
+import json, io
+from flask import send_file
 
 from datetime import datetime
 from app.models import db
@@ -7,13 +8,14 @@ class Product(db.Document):
     meta = {'collection': 'Product'}
     name = db.StringField(required=True)
     stock = db.IntField(required=True)
-    picture = db.StringField(required=True)
+    picture = db.FileField(required=True)
     price = db.FloatField(required=True)
 
     @staticmethod
-    def createProduct(body):
+    def createProduct(body, picture):
         try:
             product = Product.from_json(json.dumps(body), True)
+            product.picture.put(picture, filename=picture.filename.replace(" ", "_"), content_type=picture.content_type)
             product.save()
         except Exception as error:
             print(error)
@@ -24,20 +26,31 @@ class Product(db.Document):
     def getProduct(id):
         try:
             product = Product.objects().get(id=str(id))
-            print(product.id)
             data = {}
             data["id"] = str(product.id)
             data["name"] = product.name
             data["stock"] = product.stock
-            data["picture"] = product.picture
             data["price"] = product.price
-
-
+            data["picture"] = f"/api/product/{str(product.id)}/image/{product.picture.filename}"
 
         except Exception as error:
             print(error)
 
         return data
+
+    @staticmethod
+    def getImage(id):
+        try:
+            product = Product.objects().get(id=id)
+        
+            file = send_file(io.BytesIO(product.picture.read()),
+                     attachment_filename=product.picture.filename,
+                     mimetype=product.picture.content_type)
+
+        except Exception as error:
+            print(error)
+
+        return file
 
     @staticmethod
     def getAllProducts():
@@ -49,8 +62,8 @@ class Product(db.Document):
                 data["id"] = str(product.id)
                 data["name"] = product.name
                 data["stock"] = product.stock
-                data["picture"] = product.picture
                 data["price"] = product.price
+                data["picture"] = f"/api/product/{str(product.id)}/image/{product.picture.filename}"
 
                 listProducts.append(data)
             
@@ -60,12 +73,22 @@ class Product(db.Document):
         return listProducts
 
     @staticmethod
-    def updateProduct(id, body):
+    def updateProduct(id, body, picture):
         try:
-            product = Product.objects().get(id=id).update(name=body["name"])
-            product = Product.objects().get(id=id).update(stock=body["stock"])
-            product = Product.objects().get(id=id).update(picture=body["picture"])
-            product = Product.objects().get(id=id).update(price=body["price"])
+            # product = Product.objects().get(id=id).update(name=body["name"])
+            # product = Product.objects().get(id=id).update(stock=body["stock"])
+            # product = Product.objects().get(id=id).update(picture=body["picture"])
+            # product = Product.objects().get(id=id).update(price=body["price"])
+            product = Product.objects().get(id=id)
+
+            print(body["name"])
+
+            product.name = body["name"]
+            product.stock = int(body["stock"])
+            product.price = float(body["price"])
+            product.picture.replace(picture, filename=picture.filename.replace(" ", "_"), content_type=picture.content_type)
+
+            product.save()
             
         except Exception as error:
             print(error)

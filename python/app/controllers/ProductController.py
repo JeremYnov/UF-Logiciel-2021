@@ -1,13 +1,15 @@
-from flask import Response, request, jsonify
+from flask import Response, request, jsonify, send_file
 from flask_restful import Resource
 
 import json
 
 from app.models.Product import Product
 
+from pprint import pprint
+
 
 class ProductController(Resource):
-    def get(self, id="") :
+    def get(self, id="", filename="") :
         if str(request.url_rule) == '/api/product/<string:id>':
 
             product = Product.getProduct(id)
@@ -38,19 +40,25 @@ class ProductController(Resource):
             }
 
             return jsonify(result)
+
+        elif str(request.url_rule) == '/api/product/<string:id>/image/<string:filename>':
+            return Product.getImage(id)
         
         return Response(status=404)
 
     def post(self):
-        body = request.json
+        body = dict(request.form)
+        picture = request.files['picture']
 
-        product = Product.createProduct(body)
+        product = Product.createProduct(body, picture)
+
         return Response(product.to_json(), mimetype="application/json", status=200)
 
     def put(self, id=""):
-        body = request.json
+        body = dict(request.form)
+        picture = request.files['picture']
 
-        product = Product.updateProduct(id, body)
+        product = Product.updateProduct(id, body, picture)
         result = {
             "message" : f"le produit {id} a été modifié"
         }
