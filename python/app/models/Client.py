@@ -54,8 +54,8 @@ class Client(db.Document):
         try:
             client = Client.from_json(json.dumps(body), True)
             client.save()
-
         except Exception as error:
+            print(error)
             client = None
 
         return client

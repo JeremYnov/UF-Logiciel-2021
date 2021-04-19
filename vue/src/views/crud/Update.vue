@@ -41,7 +41,6 @@ export default {
     };
   },
   mounted: function () {
-    console.log(this.deleteElement);
     axios
       .get(`/api${this.$route.path.slice(4)}/form`)
       .then((response) => {

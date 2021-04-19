@@ -8,7 +8,7 @@
     </div>
     <div class="container">
       <div v-if="loading" class="loading">Chargement...</div>
-
+      <router-link class="btn btn-primary btn-lg btn-block" v-bind:to="{ name: 'Add'+this.$route.name.slice(0,-1)}">Add new</router-link>
       <table class="table">
         <thead class="table-dark">
           <tr>

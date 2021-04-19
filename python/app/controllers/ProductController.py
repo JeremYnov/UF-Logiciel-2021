@@ -1,4 +1,4 @@
-from flask import Response, request, jsonify
+from flask import Response, request, jsonify, redirect
 from flask_restful import Resource
 
 import json
@@ -56,7 +56,9 @@ class ProductController(Resource):
                     "label":"Picture",
                 },
                 "price" : {
-                    "type": "float",
+                    # "type": "float",
+                    "type":"number", 
+                    "step":"any",
                     "placeholder": "Enter price...",
                     "name":"price",
                     "label":"Price",
@@ -73,7 +75,8 @@ class ProductController(Resource):
 
         product = Product.createProduct(body, picture)
 
-        return Response(product.to_json(), mimetype="application/json", status=200)
+        return redirect('http://localhost:8080/products')
+        # return Response(product.to_json(), mimetype="application/json", status=200)
 
     def put(self, id=""):
         body = dict(request.form)

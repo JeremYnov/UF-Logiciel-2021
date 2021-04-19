@@ -64,6 +64,21 @@ const routes = [
     name: 'AddInvoice',
     component: () => import('../views/crud/Add.vue')
   },
+  {
+    path: '/update/client/:id',
+    name: 'UpdateClient',
+    component: () => import('../views/crud/Update.vue')
+  },
+  {
+    path: '/update/product/:id',
+    name: 'UpdateProduct',
+    component: () => import('../views/crud/Update.vue')
+  },
+  {
+    path: '/update/invoice/:id',
+    name: 'UpdateInvoice',
+    component: () => import('../views/crud/Update.vue')
+  },
 ]
 
 const router = new VueRouter({

@@ -1,4 +1,4 @@
-from flask import Response, request, jsonify
+from flask import Response, request, jsonify, redirect
 from flask_restful import Resource
 
 import json
@@ -40,13 +40,13 @@ class ClientController(Resource):
                 "firstName" : {
                     "type": "text",
                     "placeholder": "Enter firstName...",
-                    "name":"firstname",
+                    "name":"firstName",
                     "label":"Firstname",
                 },
                 "lastName" : {
                     "type": "text",
                     "placeholder": "Enter lastName...",
-                    "name":"lastname",
+                    "name":"lastName",
                     "label":"Lastname",
                 },
                 "email" : {
@@ -65,25 +65,24 @@ class ClientController(Resource):
         return jsonify(result)
 
     def post(self):
-        body = request.json
+        body = dict(request.form)
 
         client = Client.create(body)
 
         if not client:
             result = {
-                'message': f"data client created",
-                'success': True,
-                'result': client
+                'message': f"data client not create",
+                'success': False,
             }
-
             return jsonify(result)
-
         result = {
-            'message': f"data client not create",
-            'success': False,
+            'message': f"data client created",
+            'success': True,
+            'result': client
         }
 
-        return jsonify(result)
+        return redirect('http://localhost:8080/clients')
+        # return jsonify(result)
         
 
     def put(self, id=""):
