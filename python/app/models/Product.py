@@ -31,7 +31,9 @@ class Product(db.Document):
             data["name"] = product.name
             data["stock"] = product.stock
             data["price"] = product.price
-            data["picture"] = f"/api/product/{str(product.id)}/image/{product.picture.filename}"
+            data["image"] = {}
+            data["image"]["url"] = f"/api/product/{str(product.id)}/image/{product.picture.filename}"
+            data["image"]["name"] = product.picture.filename
 
         except Exception as error:
             print(error)
@@ -63,7 +65,9 @@ class Product(db.Document):
                 data["name"] = product.name
                 data["stock"] = product.stock
                 data["price"] = product.price
-                data["picture"] = f"/api/product/{str(product.id)}/image/{product.picture.filename}"
+                data["image"] = {}
+                data["image"]["url"] = f"/api/product/{str(product.id)}/image/{product.picture.filename}"
+                data["image"]["name"] = product.picture.filename
 
                 listProducts.append(data)
             
