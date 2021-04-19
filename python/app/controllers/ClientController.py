@@ -34,6 +34,22 @@ class ClientController(Resource):
             }
 
             return jsonify(result)
+        
+        if str(request.url_rule) == '/api/client/form':
+            result = {
+                "firstName" : {
+                    "type": "text",
+                    "placeholder": "Enter firstName..."
+                },
+                "lastName" : {
+                    "type": "text",
+                    "placeholder": "Enter lastName..."
+                },
+                "picture" : {
+                    "email": "email",
+                    "placeholder": "Enter email..."
+                }
+            }
 
         result = {
             'message': f"data client {client['id']} n'existe pas",

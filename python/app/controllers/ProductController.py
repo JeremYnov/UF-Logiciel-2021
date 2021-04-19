@@ -14,13 +14,7 @@ class ProductController(Resource):
                 "message": 'recuperation du produit' + str(product["name"]),
                 "success": True,
                 "count" : 1,
-                "result": product,
-                "form": {
-                    "name" : "text",
-                    "stock" : "number",
-                    "picture" : "file",
-                    "price" : "float"
-                }
+                "result": product
             }
 
             return jsonify(result)
@@ -40,6 +34,28 @@ class ProductController(Resource):
 
         elif str(request.url_rule) == '/api/product/<string:id>/image/<string:filename>':
             return Product.getImage(id)
+
+        elif str(request.url_rule) == '/api/product/form':
+            result = {
+                "name" : {
+                    "type": "text",
+                    "placeholder": "Enter name..."
+                },
+                "stock" : {
+                    "type": "number",
+                    "placeholder": "Enter stock..."
+                },
+                "picture" : {
+                    "type": "file",
+                    "placeholder": "Enter picture..."
+                },
+                "price" : {
+                    "type": "float",
+                    "placeholder": "Enter price..."
+                }
+            }
+
+            return jsonify(result)
         
         return Response(status=404)
 
