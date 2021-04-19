@@ -27,11 +27,26 @@ class ClientController(Resource):
                 'success': True,
                 'result': client,
                 'form': {
-                    'firstName': "text",
-                    'lastName': "text",
-                    'email': "email",
+                    "firstName" : {
+                        "type": "text",
+                        "placeholder": "Enter firstName...",
+                        "name":"firstName",
+                        "label":"Firstname"
+                    },
+                    "lastName" : {
+                        "type": "text",
+                        "placeholder": "Enter lastName...",
+                        "name":"lastName",
+                        "label":"Lastname"
+                    },
+                    "email" : {
+                        "type": "email",
+                        "placeholder": "Enter email...",
+                        "name":"email",
+                        "label":"Email"
+                    }
                 }
-            }
+            } 
 
             return jsonify(result)
         
