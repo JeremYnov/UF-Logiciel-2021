@@ -62,35 +62,32 @@ class Client(db.Document):
 
     @staticmethod
     def update(id, body):
-        updated = {}
-        count = 0
-
         try:
-            firstName = Client.objects(id=id).update(firstName=body['firstName'])
-            updated['firstName'] = firstName
-            count += 1
+            updated = {
+                "count": 0
+            }
+
+            client = Client.objects().get(id=id)
+
+            if body["firstName"]:
+                client.firstName = body["firstName"]
+                updated["firstName"] = "updated"
+                updated["count"] += 1
+
+            if body["lastName"]:
+                client.lastName = body["lastName"]
+                updated["lastName"] = "lastName"
+                updated["count"] += 1
+
+            if body["email"]:
+                client.email = body["email"]   
+                updated["email"] = "email"
+                updated["count"] += 1
+
+            client.save()
 
         except Exception as error:
-            updated['firstName'] = 0
-
-        try:
-            lastName = Client.objects(id=id).update(lastName=body['lastName'])
-            updated['lastName'] = lastName
-            count += 1
-
-        except Exception as error:
-            updated['lastName'] = 0
-
-        try:
-            email = Client.objects(id=id).update(email=body['email'])
-            updated['email'] = email
-            count += 1
-
-        except Exception as error:
-            updated['email'] = 0
-
-        if count == 0:
-            return count
+            print(error)
 
         return updated
     
