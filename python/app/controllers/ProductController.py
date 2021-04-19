@@ -14,7 +14,37 @@ class ProductController(Resource):
                 "message": 'recuperation du produit' + str(product["name"]),
                 "success": True,
                 "count" : 1,
-                "result": product
+                "result": product,
+                'form': {
+                    "name" : {
+                        "type": "text",
+                        "placeholder": "Enter name...",
+                        "name":"name",
+                        "label":"Name",
+                        "value":product['name']
+                    },
+                    "stock" : {
+                        "type": "number",
+                        "placeholder": "Enter stock...",
+                        "name":"stock",
+                        "label":"Stock",
+                        "value":product['stock']
+                    },
+                    "picture" : {
+                        "type": "file",
+                        "placeholder": "Enter picture...",
+                        "name":"picture",
+                        "label":"Picture",
+                    },
+                    "price" : {
+                        "type":"number", 
+                        "step":"any",
+                        "placeholder": "Enter price...",
+                        "name":"price",
+                        "label":"Price",
+                        "value":product['price']
+                    }
+                }
             }
 
             return jsonify(result)

@@ -26,7 +26,7 @@
             </td>
             <td>
               <router-link
-                v-bind:to="{ name: pathName, params: { id: info.id } }"
+                v-bind:to="{ name: 'Update'+pathName, params: { id: info.id } }"
                 ><i class="fas fa-edit"></i
               ></router-link>
               |
@@ -53,7 +53,6 @@ export default {
     };
   },
   mounted: function () {
-      console.log(this.deleteElement)
     axios
       .get(`/api${this.$route.path}`)
       .then((response) => {
@@ -61,7 +60,6 @@ export default {
         this.infos = response.data.results;
         this.keys = Object.keys(Object.assign({}, ...this.infos));
         this.pathName = response.data.unitName;
-        console.log(this.$route);
       })
       .catch((error) => {
         console.log(error);
@@ -72,7 +70,6 @@ export default {
       });
   },
   methods:{
-    
     async deleteElement(id) {
       await axios
       .delete(`/api${this.$route.path.slice(0, -1)}/${id}/delete`)

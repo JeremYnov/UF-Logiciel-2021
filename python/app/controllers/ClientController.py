@@ -31,19 +31,22 @@ class ClientController(Resource):
                         "type": "text",
                         "placeholder": "Enter firstName...",
                         "name":"firstName",
-                        "label":"Firstname"
+                        "label":"Firstname",
+                        "value":client['firstName'],
                     },
                     "lastName" : {
                         "type": "text",
                         "placeholder": "Enter lastName...",
                         "name":"lastName",
-                        "label":"Lastname"
+                        "label":"Lastname",
+                        "value":client['lastName'],
                     },
                     "email" : {
                         "type": "email",
                         "placeholder": "Enter email...",
                         "name":"email",
-                        "label":"Email"
+                        "label":"Email",
+                        "value":client['email'],
                     }
                 }
             } 

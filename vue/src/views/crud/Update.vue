@@ -8,17 +8,19 @@
     </div>
     <div v-if="loading" class="loading">Chargement...</div>
     <form :action="path" method="POST" enctype='multipart/form-data'>
-      <div v-for="info in infos" :key="info">
+      <div v-for="info in infos.form" :key="info">
         <label :for="info.name">{{ info.label }}</label>
         <input v-if='info.step' :type="info.type"
           :placeholder="info.placeholder"
           :name="info.name"
           :step='info.step'
+          :value='info.value'
           required>
         <input v-else
           :type="info.type"
           :placeholder="info.placeholder"
           :name="info.name"
+          :value='info.value'
           required
         />
         
@@ -42,9 +44,8 @@ export default {
   },
   mounted: function () {
     axios
-      .get(`/api${this.$route.path.slice(4)}/form`)
+      .get(`/api${this.$route.path.slice(7)}`)
       .then((response) => {
-        console.log(this.$route);
         this.infos = response.data;
       })
       .catch((error) => {
@@ -54,7 +55,6 @@ export default {
       .finally(() => {
         this.loading = false;
       });
-      this.path = '/api'+this.$route.path.slice(4)+"/new"
   },
 };
 </script>
