@@ -106,18 +106,35 @@ class ProductController(Resource):
         product = Product.createProduct(body, picture)
 
         return redirect('http://localhost:8080/products')
-        # return Response(product.to_json(), mimetype="application/json", status=200)
 
     def put(self, id=""):
         body = dict(request.form)
-        picture = request.files['picture']
+        picture = ""
 
-        product = Product.updateProduct(id, body, picture)
+        if request.files:
+            picture = request.files['picture']
+       
+        updated = Product.updateProduct(id, body, picture)
+        
+        if updated["count"] == 0:
+            result = {
+                'message': f"data produit {id} not update",
+                'success': False
+            }
+            return jsonify(result)
+
         result = {
-            "message" : f"le produit {id} a été modifié"
+            'message': f"data produit {id} update",
+            'path': {
+                'path': f"/product/{id}",
+                'name': "Product",
+                'params': { 'id': id }
+            },
+            'success': True,
+            'updated': updated
         }
         return jsonify(result)
-    
+
     def delete(self, id=""):
         if str(request.url_rule) == '/api/product/<string:id>/delete':
             

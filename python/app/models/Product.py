@@ -79,25 +79,34 @@ class Product(db.Document):
     @staticmethod
     def updateProduct(id, body, picture):
         try:
-            # product = Product.objects().get(id=id).update(name=body["name"])
-            # product = Product.objects().get(id=id).update(stock=body["stock"])
-            # product = Product.objects().get(id=id).update(picture=body["picture"])
-            # product = Product.objects().get(id=id).update(price=body["price"])
+            updated = {
+                "count": 0
+            }
+
             product = Product.objects().get(id=id)
 
-            print(body["name"])
+            if body["name"]:
+                product.name = body["name"]
+                updated["name"] = "updated"
+                updated["count"] += 1
+            if body["stock"]:
+                product.stock = int(body["stock"])
+                updated["stock"] = "updated"
+                updated["count"] += 1
+            if body["price"]:
+                product.price = float(body["price"])
+                updated["price"] = "updated"
+                updated["count"] += 1
+            if picture:
+                product.picture.replace(picture, filename=picture.filename.replace(" ", "_"), content_type=picture.content_type)
+                updated["picture"] = "updated"
+                updated["count"] += 1
 
-            product.name = body["name"]
-            product.stock = int(body["stock"])
-            product.price = float(body["price"])
-            product.picture.replace(picture, filename=picture.filename.replace(" ", "_"), content_type=picture.content_type)
-
-            product.save()
-            
+            product.save()    
         except Exception as error:
             print(error)
 
-        return product
+        return updated
 
     @staticmethod
     def deleteProduct(id):

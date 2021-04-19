@@ -7,7 +7,7 @@
       </p>
     </div>
     <div v-if="loading" class="loading">Chargement...</div>
-    <form enctype="multipart/form-data" @submit.prevent="update" >
+    <form v-if="infos" @submit.prevent="update" >
       <div v-for="info in infos.form" :key="info.name">
         <label :for="info.name">{{ info.label }}</label>
         <input
@@ -17,8 +17,6 @@
           :name="info.name"
           :step="info.step"
           :value="info.value"
-          @change="updateValue"
-          required
         />
         <input
           v-else
@@ -26,8 +24,6 @@
           :placeholder="info.placeholder"
           :name="info.name"
           :value="info.value"
-          @change="updateValue"
-          required
         />
       </div>
       <button type="submit">Valider</button>
@@ -44,8 +40,7 @@ export default {
       errored: false,
       loading: true,
       infos: null,
-      path: null,
-      form: {},
+      path: null
     };
   },
   mounted: async function () {
@@ -63,22 +58,26 @@ export default {
       });
   },
   methods: {
-    update() {
+    async update(event) {
       let formData = new FormData();
-      for(const element in this.form){
-          console.log(element)
-          console.log(this.form[element])
-          formData.append(element, this.form[element])
-        //   console.log(this.form[element])
-      }
-      console.log(formData)
+
+      event.target.forEach(element => {
+        if (element.type == "file") {
+          if (element.files[0]) {
+            formData.append(element.name, element.files[0], element.files[0].name);
+          }
+        } else {
+          formData.append(element.name, element.value);
+        }
+      });
+
       let config = {
         method: "put",
         url: `/api${this.$route.path.slice(7)}/update`,
         headers: { "Content-Type": "multipart/form-data" },
         data: formData,
       };
-      const response = axios(config)
+      const response = await axios(config)
         .then(function (response) {
           return response;
         })
@@ -86,10 +85,9 @@ export default {
           console.log(error);
         });
       console.log(response);
-    },
-    updateValue(event) {
-        this.form[event.target.name] = event.target.value;
-    },
+
+      this.$router.push({ name: `${response.data.path.name}`, params: `${response.data.path.params}`})
+    }
   },
 };
 </script>

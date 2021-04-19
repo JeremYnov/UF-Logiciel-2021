@@ -84,7 +84,6 @@ class ClientController(Resource):
 
     def post(self):
         body = dict(request.form)
-
         client = Client.create(body)
 
         if not client:
@@ -93,51 +92,42 @@ class ClientController(Resource):
                 'success': False,
             }
             return jsonify(result)
+
         result = {
             'message': f"data client created",
             'success': True,
             'result': client
         }
-
         return redirect('http://localhost:8080/clients')
-        # return jsonify(result)
-        
 
     def put(self, id=""):
-        if str(request.url_rule) == '/api/client/<string:id>/update':
-            body = dict(request.form)
-            
-            updated = Client.update(id, body)
+        body = dict(request.form)
+        updated = Client.update(id, body)
 
-            if updated["count"] == 0:
-                result = {
-                    'message': f"data client {id} not update",
-                    'success': False,
-                }
-
-                return jsonify(result)
-
+        if updated["count"] == 0:
             result = {
-                'message': f"data client {id} update",
-                'success': True,
-                'updated': updated
+                'message': f"data client {id} not update",
+                'success': False,
             }
-            
-
             return jsonify(result)
 
-        return Response(status=404)
-
+        result = {
+            'message': f"data client {id} update",
+            'path': {
+                'path': f"/client/{id}",
+                'name': "Client",
+                'params': { 'id': id }
+            },
+            'success': True,
+            'updated': updated
+        }
+        return jsonify(result)
     
     def delete(self, id=""):
-        if str(request.url_rule) == '/api/client/<string:id>/delete':
-            client = Client.delete(id)
+        client = Client.delete(id)
 
-            result = {
-                "message": f"data client {id} delete",
-                "success": True
-            }
-
-            return jsonify(result)
-
-        return Response(status=404)
+        result = {
+            "message": f"data client {id} delete",
+            "success": True
+        }
+        return jsonify(result)
