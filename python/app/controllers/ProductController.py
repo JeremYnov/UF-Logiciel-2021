@@ -39,19 +39,27 @@ class ProductController(Resource):
             result = {
                 "name" : {
                     "type": "text",
-                    "placeholder": "Enter name..."
+                    "placeholder": "Enter name...",
+                    "name":"name",
+                    "label":"Name",
                 },
                 "stock" : {
                     "type": "number",
-                    "placeholder": "Enter stock..."
+                    "placeholder": "Enter stock...",
+                    "name":"stock",
+                    "label":"Stock",
                 },
                 "picture" : {
                     "type": "file",
-                    "placeholder": "Enter picture..."
+                    "placeholder": "Enter picture...",
+                    "name":"picture",
+                    "label":"Picture",
                 },
                 "price" : {
                     "type": "float",
-                    "placeholder": "Enter price..."
+                    "placeholder": "Enter price...",
+                    "name":"price",
+                    "label":"Price",
                 }
             }
 

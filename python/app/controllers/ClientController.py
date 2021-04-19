@@ -39,23 +39,29 @@ class ClientController(Resource):
             result = {
                 "firstName" : {
                     "type": "text",
-                    "placeholder": "Enter firstName..."
+                    "placeholder": "Enter firstName...",
+                    "name":"firstname",
+                    "label":"Firstname",
                 },
                 "lastName" : {
                     "type": "text",
-                    "placeholder": "Enter lastName..."
+                    "placeholder": "Enter lastName...",
+                    "name":"lastname",
+                    "label":"Lastname",
                 },
-                "picture" : {
-                    "email": "email",
-                    "placeholder": "Enter email..."
+                "email" : {
+                    "type": "email",
+                    "placeholder": "Enter email...",
+                    "name":"email",
+                    "label":"Email",
                 }
             }
-
+            return jsonify(result)
+        
         result = {
             'message': f"data client {client['id']} n'existe pas",
             'success': False,
         }
-
         return jsonify(result)
 
     def post(self):

@@ -49,6 +49,21 @@ const routes = [
     name: 'Invoice',
     component: () => import('../views/display-unit/DisplayUnit.vue')
   },
+  {
+    path: '/add/client',
+    name: 'AddClient',
+    component: () => import('../views/crud/Add.vue')
+  },
+  {
+    path: '/add/product',
+    name: 'AddProduct',
+    component: () => import('../views/crud/Add.vue')
+  },
+  {
+    path: '/add/invoice',
+    name: 'AddInvoice',
+    component: () => import('../views/crud/Add.vue')
+  },
 ]
 
 const router = new VueRouter({

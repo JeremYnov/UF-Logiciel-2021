@@ -17,11 +17,18 @@
         </thead>
         <tbody>
           <tr>
-            <td v-for="(value, key) in info" :key="key">{{ value }}</td>
+            <td v-for="(value, key) in info" :key="key">
+              <img
+                v-if="key == 'image'"
+                :src="value.url"
+                :alt="value.name"
+                style="height: 50px; width: 50px"
+              />
+              <p v-else>{{ value }}</p>
+            </td>
           </tr>
         </tbody>
       </table>
-      <div>{{ info }}</div>
     </div>
   </section>
 </template>

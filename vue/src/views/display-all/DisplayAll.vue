@@ -19,13 +19,11 @@
         <tbody>
           <tr v-for="info in infos" :key="info.id">
             <td v-for="(value, key) in info" :key="key">
-              <router-link
-                v-bind:to="{ name: pathName, params: { id: info.id } }"
-              >
-                {{ value }}</router-link
-              >
+              <router-link v-bind:to="{ name: pathName, params: { id: info.id } }">
+                <img v-if="key == 'image'" :src="value.url" :alt="value.name" style="height:50px; width:50px">
+                <p v-else>{{ value }}</p>
+                </router-link>
             </td>
-
             <td>
               <router-link
                 v-bind:to="{ name: pathName, params: { id: info.id } }"
@@ -48,6 +46,7 @@ export default {
     return {
       pathName: null,
       infos: null,
+      types:null,
       keys: null,
       errored: false,
       loading: true,
@@ -74,18 +73,18 @@ export default {
   },
   methods:{
     
-    // async deleteElement(id) {
-      
-    //   axios
-    //   .delete()
-    //   .catch((error) => {
-    //     console.log(error);
-    //     this.errored = true;
-    //   })
-    //   .finally(() => {
-    //     this.loading = false;
-    //   });
-    // },
+    async deleteElement(id) {
+      await axios
+      .delete(`/api${this.$route.path.slice(0, -1)}/${id}/delete`)
+      .catch((error) => {
+        console.log(error);
+        this.errored = true;
+      })
+      .finally(() => {
+        this.loading = false;
+      });
+      window.location.reload();
+    },
   },
 };
 </script>
