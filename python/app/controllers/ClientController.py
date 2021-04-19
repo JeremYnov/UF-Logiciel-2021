@@ -105,23 +105,24 @@ class ClientController(Resource):
 
     def put(self, id=""):
         if str(request.url_rule) == '/api/client/<string:id>/update':
-            body = request.json
+            body = dict(request.form)
             
             updated = Client.update(id, body)
 
-            if updated != 0:
+            if updated["count"] == 0:
                 result = {
-                    'message': f"data client {id} update",
-                    'success': True,
-                    'updated': updated
+                    'message': f"data client {id} not update",
+                    'success': False,
                 }
 
                 return jsonify(result)
 
             result = {
-                'message': f"data client {id} not update",
-                'success': False,
+                'message': f"data client {id} update",
+                'success': True,
+                'updated': updated
             }
+            
 
             return jsonify(result)
 
@@ -131,14 +132,6 @@ class ClientController(Resource):
     def delete(self, id=""):
         if str(request.url_rule) == '/api/client/<string:id>/delete':
             client = Client.delete(id)
-
-            # if not client:
-            #     result = {
-            #         "message": f"data client not delete",
-            #         "success": False
-            #     }
-
-            #     return jsonify(result)
 
             result = {
                 "message": f"data client {id} delete",
