@@ -40,3 +40,92 @@ class Invoice(db.Document):
             invoice = None
 
         return invoice
+    
+    @staticmethod
+    def getAllInvoice():
+        try:
+            invoices = Invoice.objects().all()
+            listInvoice = []
+            for invoice in invoices :
+                data = {}
+                data["id"] = str(invoice.id)
+                
+                data["issueDate"] = invoice.issueDate
+                data["isPaid"] = invoice.isPaid
+                data["paymentDate"] = invoice.paymentDate
+                data["price"] = invoice.price
+                data["products"] = []
+                
+                dataClient = {}
+                dataClient['id'] = str(invoice.client.id)
+                dataClient['firstName'] = invoice.client.firstName
+                dataClient['lastName'] = invoice.client.lastName
+                dataClient['email'] = invoice.client.email
+                dataClient['creation'] = invoice.client.creation.strftime('%d/%m/%Y')
+                data["client"] = dataClient
+                
+                for product in invoice.products :
+                    dataProduct = {}
+                    dataProduct["id"] = str(product.id)
+                    dataProduct["name"] = product.name
+                    dataProduct["stock"] = product.stock
+                    dataProduct["price"] = product.price
+                    dataProduct["image"] = {}
+                    dataProduct["image"]["url"] = f"/api/product/{str(product.id)}/image/{product.picture.filename}"
+                    dataProduct["image"]["name"] = product.picture.filename
+                    data["products"].append(dataProduct) 
+                    
+                listInvoice.append(data)
+            
+        except Exception as error:
+            print(error)
+
+        return listInvoice
+
+    @staticmethod
+    def getInvoice(id):
+        try:
+            invoice = Invoice.objects().get(id=id)
+            data = {}
+            data["id"] = str(invoice.id)
+            data["issueDate"] = invoice.issueDate
+            data["isPaid"] = invoice.isPaid
+            data["paymentDate"] = invoice.paymentDate
+            data["price"] = invoice.price
+            data["products"] = []
+            
+            dataClient = {}
+            dataClient['id'] = str(invoice.client.id)
+            dataClient['firstName'] = invoice.client.firstName
+            dataClient['lastName'] = invoice.client.lastName
+            dataClient['email'] = invoice.client.email
+            dataClient['creation'] = invoice.client.creation.strftime('%d/%m/%Y')
+            data["client"] = dataClient
+            
+            for product in invoice.products :
+                dataProduct = {}
+                dataProduct["id"] = str(product.id)
+                dataProduct["name"] = product.name
+                dataProduct["stock"] = product.stock
+                dataProduct["price"] = product.price
+                dataProduct["image"] = {}
+                dataProduct["image"]["url"] = f"/api/product/{str(product.id)}/image/{product.picture.filename}"
+                dataProduct["image"]["name"] = product.picture.filename
+                data["products"].append(dataProduct) 
+
+        except Exception as error:
+            print(error)
+
+        return data
+
+    @staticmethod
+    def deleteInvoice(id):
+        try:
+            invoice = Invoice.objects().get(id=id)
+            invoice.delete()
+            
+        except Exception as error:
+            invoice = None
+            print(error)
+
+        return invoice
