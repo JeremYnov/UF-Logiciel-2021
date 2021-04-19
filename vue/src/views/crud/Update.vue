@@ -7,23 +7,28 @@
       </p>
     </div>
     <div v-if="loading" class="loading">Chargement...</div>
-    <form :action="path" method="POST" enctype='multipart/form-data'>
-      <div v-for="info in infos.form" :key="info">
+    <form enctype="multipart/form-data" @submit.prevent="update" >
+      <div v-for="info in infos.form" :key="info.name">
         <label :for="info.name">{{ info.label }}</label>
-        <input v-if='info.step' :type="info.type"
-          :placeholder="info.placeholder"
-          :name="info.name"
-          :step='info.step'
-          :value='info.value'
-          required>
-        <input v-else
+        <input
+          v-if="info.step"
           :type="info.type"
           :placeholder="info.placeholder"
           :name="info.name"
-          :value='info.value'
+          :step="info.step"
+          :value="info.value"
+          @change="updateValue"
           required
         />
-        
+        <input
+          v-else
+          :type="info.type"
+          :placeholder="info.placeholder"
+          :name="info.name"
+          :value="info.value"
+          @change="updateValue"
+          required
+        />
       </div>
       <button type="submit">Valider</button>
     </form>
@@ -39,11 +44,12 @@ export default {
       errored: false,
       loading: true,
       infos: null,
-      path:null,
+      path: null,
+      form: {},
     };
   },
-  mounted: function () {
-    axios
+  mounted: async function () {
+    await axios
       .get(`/api${this.$route.path.slice(7)}`)
       .then((response) => {
         this.infos = response.data;
@@ -55,6 +61,35 @@ export default {
       .finally(() => {
         this.loading = false;
       });
+  },
+  methods: {
+    update() {
+      let formData = new FormData();
+      for(const element in this.form){
+          console.log(element)
+          console.log(this.form[element])
+          formData.append(element, this.form[element])
+        //   console.log(this.form[element])
+      }
+      console.log(formData)
+      let config = {
+        method: "put",
+        url: `/api${this.$route.path.slice(7)}/update`,
+        headers: { "Content-Type": "multipart/form-data" },
+        data: formData,
+      };
+      const response = axios(config)
+        .then(function (response) {
+          return response;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+      console.log(response);
+    },
+    updateValue(event) {
+        this.form[event.target.name] = event.target.value;
+    },
   },
 };
 </script>
