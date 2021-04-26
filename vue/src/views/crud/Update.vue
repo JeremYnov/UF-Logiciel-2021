@@ -7,23 +7,40 @@
       </p>
     </div>
     <div v-if="loading" class="loading">Chargement...</div>
-    <form v-if="infos" @submit.prevent="update" >
-      <div v-for="info in infos.form" :key="info.name">
-        <label :for="info.name">{{ info.label }}</label>
-        <input
+    <form v-if="infos" @submit.prevent="update">
+      <!-- <div v-for="info in infos.form" :key="info.name"> -->
+        <!-- <label :for="info.name">{{ info.label }}</label> -->
+        <!-- <input
           v-if="info.step"
           :type="info.type"
           :placeholder="info.placeholder"
           :name="info.name"
           :step="info.step"
           :value="info.value"
-        />
-        <input
+        /> -->
+        <!-- <input
           v-else
           :type="info.type"
           :placeholder="info.placeholder"
           :name="info.name"
           :value="info.value"
+        /> -->
+      <!-- </div> -->
+      <div v-for="info in infos.form" :key="info.name">
+        <Input v-if="info.step"
+          :type="info.type"
+          :placeholder="info.placeholder"
+          :name="info.name"
+          :value="info.value"
+          :step="info.step"
+          :label="info.label"
+        />
+        <Input v-else
+          :type="info.type"
+          :placeholder="info.placeholder"
+          :name="info.name"
+          :value="info.value"
+          :label="info.label"
         />
       </div>
       <button type="submit">Valider</button>
@@ -34,14 +51,18 @@
 
 <script>
 import axios from "axios";
+import Input from "../../components/generic/Input";
 export default {
   data() {
     return {
       errored: false,
       loading: true,
       infos: null,
-      path: null
+      path: null,
     };
+  },
+  components: {
+    Input,
   },
   mounted: async function () {
     await axios
@@ -61,10 +82,14 @@ export default {
     async update(event) {
       let formData = new FormData();
 
-      event.target.forEach(element => {
+      event.target.forEach((element) => {
         if (element.type == "file") {
           if (element.files[0]) {
-            formData.append(element.name, element.files[0], element.files[0].name);
+            formData.append(
+              element.name,
+              element.files[0],
+              element.files[0].name
+            );
           }
         } else {
           formData.append(element.name, element.value);
@@ -86,8 +111,11 @@ export default {
         });
       console.log(response);
 
-      this.$router.push({ name: `${response.data.path.name}`, params: `${response.data.path.params}`})
-    }
+      this.$router.push({
+        name: `${response.data.path.name}`,
+        params: `${response.data.path.params}`,
+      });
+    },
   },
 };
 </script>

@@ -9,19 +9,19 @@
     <div v-if="loading" class="loading">Chargement...</div>
     <form :action="path" method="POST" enctype='multipart/form-data'>
       <div v-for="info in infos" :key="info">
-        <label :for="info.name">{{ info.label }}</label>
-        <input v-if='info.step' :type="info.type"
-          :placeholder="info.placeholder"
-          :name="info.name"
-          :step='info.step'
-          required>
-        <input v-else
+        <Input v-if="info.step"
           :type="info.type"
           :placeholder="info.placeholder"
           :name="info.name"
-          required
+          :step="info.step"
+          :label="info.label"
         />
-        
+        <Input v-else
+          :type="info.type"
+          :placeholder="info.placeholder"
+          :name="info.name"
+          :label="info.label"
+        />
       </div>
       <button type="submit">Valider</button>
     </form>
@@ -31,6 +31,7 @@
 
 <script>
 import axios from "axios";
+import Input from "../../components/generic/Input";
 export default {
   data() {
     return {
@@ -39,6 +40,9 @@ export default {
       infos: null,
       path:null,
     };
+  },
+  components: {
+    Input,
   },
   mounted: function () {
     console.log(this.deleteElement);
