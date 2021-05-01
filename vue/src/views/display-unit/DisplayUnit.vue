@@ -1,15 +1,19 @@
 <template>
-  <section class="client">
+  <section>
+    <div class="section-title">
+      <h1>{{ this.$route.name }}</h1>
+    </div>
     <div v-if="errored" class="error">
       <p>
         Nous sommes désolés, nous ne sommes pas en mesure de récupérer ces
         informations pour le moment. Veuillez réessayer ultérieurement.
       </p>
     </div>
+
     <div class="container">
       <div v-if="loading" class="loading">Chargement...</div>
-
-      <table class="table">
+      <router-link :to="{ name: this.$route.name + 's'}">Retour</router-link>
+      <table class="content-table">
         <thead class="table-dark">
           <tr>
             <th v-for="(value, key) in info" :key="key">{{ key }}</th>
@@ -45,6 +49,7 @@ export default {
     };
   },
   mounted: function () {
+    console.log(this.$route)
     axios
       .get(`/api${this.$route.path}`)
       .then((response) => {
@@ -60,6 +65,3 @@ export default {
   },
 };
 </script>
-
-<style>
-</style>

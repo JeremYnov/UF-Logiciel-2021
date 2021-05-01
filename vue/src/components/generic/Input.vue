@@ -1,18 +1,20 @@
 <template>
-  <div>
-    <label :for="name">{{ label }}</label>
+  <div class="form__group field">
     <input
       :type="type"
-      :placeholder="placeholder"
       :name="name"
+      class="form__field"
+      :placeholder="placeholder"
       :value="value"
+      required
     />
+    <label for="name" class="form__label">{{ label }}</label>
   </div>
 </template>
 
 <script>
 export default {
   name: "Input",
-  props:['type', 'placeholder','name','value', 'label','step']
+  props: ["type", "placeholder", "name", "value", "label", "step"],
 };
 </script>

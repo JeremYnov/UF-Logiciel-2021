@@ -51,32 +51,32 @@ const routes = [
   },
   {
     path: '/add/client',
-    name: 'AddClient',
+    name: 'Add Client',
     component: () => import('../views/crud/Add.vue')
   },
   {
     path: '/add/product',
-    name: 'AddProduct',
+    name: 'Add Product',
     component: () => import('../views/crud/Add.vue')
   },
   {
     path: '/add/invoice',
-    name: 'AddInvoice',
+    name: 'Add Invoice',
     component: () => import('../views/crud/Add.vue')
   },
   {
     path: '/update/client/:id',
-    name: 'UpdateClient',
+    name: 'Update Client',
     component: () => import('../views/crud/Update.vue')
   },
   {
     path: '/update/product/:id',
-    name: 'UpdateProduct',
+    name: 'Update Product',
     component: () => import('../views/crud/Update.vue')
   },
   {
     path: '/update/invoice/:id',
-    name: 'UpdateInvoice',
+    name: 'Update Invoice',
     component: () => import('../views/crud/Update.vue')
   },
 ]

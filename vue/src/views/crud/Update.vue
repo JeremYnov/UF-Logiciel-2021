@@ -1,5 +1,8 @@
 <template>
-  <section class="add">
+  <section class="update">
+    <div class="section-title">
+      <h1>{{ this.$route.name }}</h1>
+    </div>
     <div v-if="errored" class="error">
       <p>
         Nous sommes désolés, nous ne sommes pas en mesure de récupérer ces
@@ -7,25 +10,8 @@
       </p>
     </div>
     <div v-if="loading" class="loading">Chargement...</div>
+    <div class="form-container">
     <form v-if="infos" @submit.prevent="update">
-      <!-- <div v-for="info in infos.form" :key="info.name"> -->
-        <!-- <label :for="info.name">{{ info.label }}</label> -->
-        <!-- <input
-          v-if="info.step"
-          :type="info.type"
-          :placeholder="info.placeholder"
-          :name="info.name"
-          :step="info.step"
-          :value="info.value"
-        /> -->
-        <!-- <input
-          v-else
-          :type="info.type"
-          :placeholder="info.placeholder"
-          :name="info.name"
-          :value="info.value"
-        /> -->
-      <!-- </div> -->
       <div v-for="info in infos.form" :key="info.name">
         <Input v-if="info.step"
           :type="info.type"
@@ -43,9 +29,10 @@
           :label="info.label"
         />
       </div>
-      <button type="submit">Valider</button>
+      <button type="submit" class="submit-btn">Valider</button>
     </form>
-    {{ infos }}
+    </div>
+    <!-- {{ infos }} -->
   </section>
 </template>
 

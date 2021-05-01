@@ -1,0 +1,23 @@
+// SCSS FILE IMPORT 
+
+// BASE
+@import './base/reset';
+@import './base/global';
+@import './base/fonts';
+
+// HELPERS
+@import './helpers/variables';
+
+
+// COMPONENTS
+@import './components/inputs';
+@import './components/buttons';
+@import './components/table';
+@import './components/title';
+
+
+// LAYOUT 
+@import './layout/header';
+
+
+// PAGES
