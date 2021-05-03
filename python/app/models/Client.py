@@ -23,6 +23,7 @@ class Client(db.Document):
                 data['lastName'] = client.lastName
                 data['email'] = client.email
                 data['creation'] = client.creation.strftime('%d/%m/%Y')
+                data['isDelete'] = False
 
                 results.append(data)
                 

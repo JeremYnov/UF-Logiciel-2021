@@ -4,12 +4,19 @@ from flask_restful import Resource
 import json
 
 from app.models.Client import Client
+from app.models.Invoice import Invoice
 
 class ClientController(Resource):
     def get(self, id=""):
         if str(request.url_rule) == "/api/clients":
             clients = Client.findAll()
-
+            clientsIsDelete = Invoice.isClientDelete()
+            
+            for client in clients :
+                for clientIsDelete in clientsIsDelete :
+                    if client == clientIsDelete :
+                        client["isDelete"] = True
+            
             result = {
                 'message': "liste de tout les clients",
                 'success': True,

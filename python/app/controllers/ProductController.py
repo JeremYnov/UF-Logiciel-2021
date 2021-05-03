@@ -4,6 +4,7 @@ from flask_restful import Resource
 import json
 
 from app.models.Product import Product
+from app.models.Invoice import Invoice
 
 class ProductController(Resource):
     def get(self, id="", filename="") :
@@ -51,12 +52,19 @@ class ProductController(Resource):
         
         elif str(request.url_rule) == '/api/products':
 
-            product = Product.getAllProducts()
+            products = Product.getAllProducts()
+            productsIsDelete = Invoice.isProductDelete()
+            
+            for product in products :
+                for productIsDelete in productsIsDelete :
+                    if product == productIsDelete :
+                        product["isDelete"] = True
+                        
             result = {
                 "message": 'recuperation des produits',
                 "success": True,
-                "count" : len(product),
-                "results": product,
+                "count" : len(products),
+                "results": products,
                 "unitName": "Product"
             }
 

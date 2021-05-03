@@ -6,6 +6,7 @@
       class="form__field"
       :placeholder="placeholder"
       :value="value"
+      :step="step"
       required
     />
     <label for="name" class="form__label">{{ label }}</label>
