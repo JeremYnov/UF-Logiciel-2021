@@ -21,11 +21,7 @@
             :step="info.step"
             :label="info.label"
           />
-          <div
-            v-else-if="
-              info.type == 'multiselect' && info.name == 'clients' && clients
-            "
-          >
+          <div v-else-if="info.type == 'multiselect' && info.name == 'clients' && clients">
             <label class="typo__label">{{ info.label }}</label>
             <multiselect
               v-model="clientValue"
@@ -36,23 +32,23 @@
               :options="clients"
               :multiple="info.multiple"
             ></multiselect>
+            <input type="hidden" name="client" :value="clientValue.id">
           </div>
-          <div
-            v-else-if="
-              info.type == 'multiselect' && info.name == 'products' && products
-            "
-          >
+          <div v-else-if="info.type == 'multiselect' && info.name == 'products' && products">
             <label class="typo__label">{{ info.label }}</label>
             <multiselect
               v-model="productValue"
               tag-placeholder="Add this as new tag"
               label="name"
               track-by="id"
+              :value="productValue"
               :placeholder="info.placeholder"
               :options="products"
               :multiple="info.multiple"
               :taggable="true"
+              @input="onChange"
             ></multiselect>
+            <input type="hidden" name="products" :value="value">
           </div>
           <Input
             v-else
@@ -86,6 +82,7 @@ export default {
       clientValue: [],
       products: [],
       productValue: [],
+      value: []
     };
   },
   components: {
@@ -144,6 +141,14 @@ export default {
         });
     }
   },
+  methods: {
+    onChange(value) {
+      this.value = []
+      value.forEach(element => {
+        this.value.push(element.id)
+      });
+    }
+  }
 };
 </script>
 

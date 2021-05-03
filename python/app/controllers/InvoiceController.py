@@ -1,4 +1,4 @@
-from flask import Response, request, jsonify
+from flask import Response, request, jsonify, redirect
 from flask_restful import Resource
 
 import json
@@ -52,13 +52,20 @@ class InvoiceController(Resource):
             return jsonify(result)
 
         return Response(status=404)
+
     def post(self):
-        body = request.json
+        req = request.form
+        body = {
+            'client': "",
+            'products': []
+        }
+        body['client'] = req['client']
+        body['products'] = req['products'].split(',')
+        print(body)
 
         invoice = Invoice.create(body)
 
-        return Response(invoice.to_json(), mimetype="application/json", status=200)
-    
+        return redirect('http://localhost:8080/invoices')
 
     def delete(self, id=""):
         if str(request.url_rule) == '/api/invoice/<string:id>/delete':
