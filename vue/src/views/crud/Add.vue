@@ -18,8 +18,8 @@
             :type="info.type"
             :placeholder="info.placeholder"
             :name="info.name"
-            :step="info.step"
             :label="info.label"
+            :step="0.01"
           />
           <div
             v-else-if="
