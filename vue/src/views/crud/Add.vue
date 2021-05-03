@@ -28,7 +28,13 @@
             :name="info.name"
             :label="info.label"
           />
+          
         </div>
+        <Multiselect v-if="info.type == 'multiselect'"
+          :placeholder="info.placeholder"
+          :label="info.label"
+          :multiple="info.multiple"
+        />
         <button type="submit" class="submit-btn">Valider</button>
       </form>
     </div>
@@ -39,7 +45,8 @@
 
 <script>
 import axios from "axios";
-import Input from "../../components/generic/Input";
+import Input from "@/components/generic/Input";
+import Multiselect from "@/components/generic/Multiselect"
 export default {
   data() {
     return {
@@ -51,6 +58,7 @@ export default {
   },
   components: {
     Input,
+    Multiselect
   },
   mounted: function () {
     console.log(this.deleteElement);
@@ -72,5 +80,3 @@ export default {
 };
 </script>
 
-<style>
-</style>

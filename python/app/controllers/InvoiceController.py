@@ -16,7 +16,7 @@ class InvoiceController(Resource):
                 "success": True,
                 "count" : len(invoices),
                 "results": invoices,
-                "unitName": "invoice"
+                "unitName": "Invoice"
             }
 
             return jsonify(result)
