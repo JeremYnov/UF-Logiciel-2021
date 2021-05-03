@@ -32,6 +32,25 @@ class InvoiceController(Resource):
 
             return jsonify(result)
 
+        if str(request.url_rule) == '/api/invoice/form':
+            result = {
+                "client" : {
+                    "type": "multiselect",
+                    "placeholder": "Search client...",
+                    "name":"client",
+                    "label":"Client",
+                    "multiple" : False
+                },
+                "products" : {
+                    "type": "multiselect",
+                    "placeholder": "Search products...",
+                    "name":"products",
+                    "label":"Products",
+                    "multiple" : True
+                }
+            }
+            return jsonify(result)
+
         return Response(status=404)
     def post(self):
         body = request.json
