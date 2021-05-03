@@ -4,9 +4,9 @@
     <multiselect
       v-model="value"
       tag-placeholder="Add this as new tag"
+      label="name"
+      track-by="id"
       :placeholder="placeholder"
-      :label="label"
-      track-by="code"
       :options="options"
       :multiple="multiple"
       :taggable="true"
@@ -16,21 +16,27 @@
 
 <script>
 import Multiselect from "vue-multiselect";
+// import axios from "axios";
 export default {
   components: {
     Multiselect,
   },
   data() {
     return {
-      props: ["options","placeholder","label","multiple"],
+      props: ["options","placeholder","label","multiple","name"],
       value: [{ name: "Javascript", code: "js" }],
-      options: [
-        { name: "Vue.js", code: "vu" },
-        { name: "Javascript", code: "js" },
-        { name: "Open Source", code: "os" },
-      ],
+    //   clients:[],
+    //   products:[],
+    //   options: [
+    //     { name: "Vue.js", code: "vu" },
+    //     { name: "Javascript", code: "js" },
+    //     { name: "Open Source", code: "os" },
+    //   ],
     };
   },
+  mounted: async function(){
+      
+  }
 };
 </script>
 

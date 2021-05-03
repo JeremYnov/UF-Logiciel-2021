@@ -37,7 +37,7 @@ class InvoiceController(Resource):
                 "client" : {
                     "type": "multiselect",
                     "placeholder": "Search client...",
-                    "name":"client",
+                    "name":"clients",
                     "label":"Client",
                     "multiple" : False
                 },
