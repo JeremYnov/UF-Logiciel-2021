@@ -16,7 +16,7 @@ class InvoiceController(Resource):
                 "success": True,
                 "count" : len(invoices),
                 "results": invoices,
-                "unitName": "invoice"
+                "unitName": "Invoice"
             }
 
             return jsonify(result)
@@ -37,7 +37,7 @@ class InvoiceController(Resource):
                 "client" : {
                     "type": "multiselect",
                     "placeholder": "Search client...",
-                    "name":"client",
+                    "name":"clients",
                     "label":"Client",
                     "multiple" : False
                 },

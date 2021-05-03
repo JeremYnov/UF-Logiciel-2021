@@ -21,6 +21,39 @@
             :step="info.step"
             :label="info.label"
           />
+          <div
+            v-else-if="
+              info.type == 'multiselect' && info.name == 'clients' && clients
+            "
+          >
+            <label class="typo__label">{{ info.label }}</label>
+            <multiselect
+              v-model="clientValue"
+              tag-placeholder="Add this as new tag"
+              label="name"
+              track-by="id"
+              :placeholder="info.placeholder"
+              :options="clients"
+              :multiple="info.multiple"
+            ></multiselect>
+          </div>
+          <div
+            v-else-if="
+              info.type == 'multiselect' && info.name == 'products' && products
+            "
+          >
+            <label class="typo__label">{{ info.label }}</label>
+            <multiselect
+              v-model="productValue"
+              tag-placeholder="Add this as new tag"
+              label="name"
+              track-by="id"
+              :placeholder="info.placeholder"
+              :options="products"
+              :multiple="info.multiple"
+              :taggable="true"
+            ></multiselect>
+          </div>
           <Input
             v-else
             :type="info.type"
@@ -29,6 +62,7 @@
             :label="info.label"
           />
         </div>
+
         <button type="submit" class="submit-btn">Valider</button>
       </form>
     </div>
@@ -39,7 +73,8 @@
 
 <script>
 import axios from "axios";
-import Input from "../../components/generic/Input";
+import Input from "@/components/generic/Input";
+import Multiselect from "vue-multiselect";
 export default {
   data() {
     return {
@@ -47,14 +82,18 @@ export default {
       loading: true,
       infos: null,
       path: null,
+      clients: [],
+      clientValue: [],
+      products: [],
+      productValue: [],
     };
   },
   components: {
     Input,
+    Multiselect,
   },
-  mounted: function () {
-    console.log(this.deleteElement);
-    axios
+  mounted: async function () {
+    await axios
       .get(`/api${this.$route.path.slice(4)}/form`)
       .then((response) => {
         console.log(this.$route);
@@ -68,9 +107,45 @@ export default {
         this.loading = false;
       });
     this.path = "/api" + this.$route.path.slice(4) + "/new";
+    if (this.$route.name == "Add Invoice") {
+      await axios
+        .get(`/api/clients`)
+        .then((response) => {
+          response.data.results.forEach((element) => {
+            const client = {
+              id: element.id,
+              name: `${element.firstName} ${element.lastName}`,
+            };
+            this.clients.push(client);
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+          this.errored = true;
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+
+      await axios
+        .get(`/api/products`)
+        .then((response) => {
+          response.data.results.forEach((element) => {
+            const product = { id: element.id, name: element.name };
+            this.products.push(product);
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+          this.errored = true;
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    }
   },
 };
 </script>
 
-<style>
-</style>
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
+

@@ -33,6 +33,22 @@
                   :alt="value.name"
                   style="height: 50px; width: 50px"
                 />
+                <div
+                  v-else-if="key == 'products'"
+                  v-for="product in info.products"
+                  :key="product.id"
+                  style="display: flex; align-items:center; padding: 5px"
+                >
+                  <img
+                    :src="product.image.url"
+                    :alt="product.name"
+                    style="height: 50px; width: 50px"
+                  />
+                  {{ product.name }}
+                </div>
+                <div v-else-if="key=='client'">
+                  <p>{{value.firstName}} {{value.lastName}}</p>
+                </div>
                 <p v-else>{{ value }}</p>
               </router-link>
             </td>
@@ -42,8 +58,9 @@
                   name: 'Update ' + pathName,
                   params: { id: info.id },
                 }"
-                ><i class="fas fa-edit"></i
-              ></router-link>
+              >
+                <i class="fas fa-edit"></i>
+              </router-link>
               |
               <i class="far fa-trash-alt" @click="deleteElement(info.id)"></i>
             </td>
