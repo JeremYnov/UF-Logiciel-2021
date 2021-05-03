@@ -129,3 +129,69 @@ class Invoice(db.Document):
             print(error)
 
         return invoice
+    
+    @staticmethod
+    def update(id, body):
+        try:
+            updated = {
+                "count": 0
+            }
+
+            invoice = Invoice.objects().get(id=id)
+
+            if body["client"]:
+                client = Client.objects.get(id=body['client'])
+                invoice.client = client
+                updated["client"] = "updated"
+                updated["count"] += 1
+            
+            if body["isPaid"]:
+                invoice.isPaid = body["isPaid"]
+                updated["isPaid"] = "updated"
+                updated["count"] += 1
+            
+            if body["products"]:
+                products = []
+                invoice.price = 0
+                for productId in body['products']:
+                    product = Product.objects.get(id=productId)
+                    invoice.price += product.price
+                    products.append(product)
+                invoice.products = products
+                updated["products"] = "updated"
+                updated["count"] += 1
+            
+            invoice.save()
+
+        except Exception as error:
+            print(error)
+
+        return updated
+
+    @staticmethod
+    def isClientDelete():
+        try:
+            clients = Client.findAll()
+
+            clientsIsDelete = []
+            for client in clients :
+                if not Invoice.objects(client=client["id"]) :
+                    clientsIsDelete.append(client)
+
+            
+        except Exception as error:
+            print(error)
+
+        return clientsIsDelete
+
+    @staticmethod
+    def isProductDelete():
+        
+        products = Product.getAllProducts()
+
+        productsIsDelete = []
+        for product in products :
+            if not Invoice.objects(products__contains=str(product['id'])) :
+                productsIsDelete.append(product)
+
+        return productsIsDelete

@@ -74,3 +74,27 @@ class InvoiceController(Resource):
             return jsonify(result)
 
         return Response(status=404)
+
+    def put(self, id=""):
+        body = request.json
+        updated = Invoice.update(id, body)
+
+        if updated["count"] == 0:
+            result = {
+                'message': f"data invoice {id} not update",
+                'success': False,
+            }
+            return jsonify(result)
+
+        result = {
+            'message': f"data invoice {id} update",
+            'path': {
+                'path': f"/invoice/{id}",
+                'name': "Invoice",
+                'params': { 'id': id }
+            },
+            'success': True,
+            'updated': updated
+        }
+
+        return jsonify(result)
