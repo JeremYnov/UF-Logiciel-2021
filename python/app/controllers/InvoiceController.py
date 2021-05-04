@@ -51,10 +51,11 @@ class InvoiceController(Resource):
                         "value": productsId
                     },
                     "isPaid": {
-                        "type": "checkbox",
+                        "type": "multiselect",
                         "placeholder": "IsPaid...",
                         "name":"isPaid",
                         "label":"IsPaid",
+                        "multiple": False,
                         "value": invoice["isPaid"]
                     }
                 }
