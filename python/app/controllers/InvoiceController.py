@@ -23,11 +23,34 @@ class InvoiceController(Resource):
         
         elif str(request.url_rule) == '/api/invoice/<string:id>' :
             invoice = Invoice.getInvoice(id)
+
+            productsId = []
+            for item in invoice["products"]:
+                productsId.append(item['id']) 
+
             result = {
                 "message": 'recuperation de la facture ' + str(invoice["id"]),
                 "success": True,
-                "count" : 1,
-                "result": invoice
+                "count": 1,
+                "result": invoice,
+                "form": {
+                    "client": {
+                        "type": "multiselect",
+                        "placeholder": "Search client...",
+                        "name":"clients",
+                        "label":"Client",
+                        "multiple": False,
+                        "value": invoice["client"]["id"]
+                    },
+                    "products": {
+                        "type": "multiselect",
+                        "placeholder": "Search products...",
+                        "name":"products",
+                        "label":"Products",
+                        "multiple": True,
+                        "value": ", ".join(productsId)
+                    }
+                }
             }
 
             return jsonify(result)
