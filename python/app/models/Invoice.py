@@ -30,6 +30,7 @@ class Invoice(db.Document):
                 invoice.price += product.price
                 products.append(product)
 
+            invoice.price = round(invoice.price, 2)
             invoice.client = client
             invoice.products = products
             # invoice.validate()
@@ -138,15 +139,21 @@ class Invoice(db.Document):
             }
 
             invoice = Invoice.objects().get(id=id)
-
             if body["client"]:
                 client = Client.objects.get(id=body['client'])
                 invoice.client = client
                 updated["client"] = "updated"
                 updated["count"] += 1
             
-            if body["isPaid"]:
+            print(type(body["isPaid"]))
+            if body["isPaid"] == True:
                 invoice.isPaid = body["isPaid"]
+                invoice.paymentDate = datetime.now()
+                updated["isPaid"] = "updated"
+                updated["count"] += 1
+            if body["isPaid"] == False :
+                invoice.isPaid = body["isPaid"]
+                invoice.paymentDate = None
                 updated["isPaid"] = "updated"
                 updated["count"] += 1
             
@@ -155,7 +162,7 @@ class Invoice(db.Document):
                 invoice.price = 0
                 for productId in body['products']:
                     product = Product.objects.get(id=productId)
-                    invoice.price += product.price
+                    invoice.price += round(product.price,2)
                     products.append(product)
                 invoice.products = products
                 updated["products"] = "updated"
@@ -169,29 +176,15 @@ class Invoice(db.Document):
         return updated
 
     @staticmethod
-    def isClientDelete():
-        try:
-            clients = Client.findAll()
+    def isClientDelete(client):
+        if not Invoice.objects(client=client["id"]) :
+            return True
 
-            clientsIsDelete = []
-            for client in clients :
-                if not Invoice.objects(client=client["id"]) :
-                    clientsIsDelete.append(client)
-
-            
-        except Exception as error:
-            print(error)
-
-        return clientsIsDelete
+        return False
 
     @staticmethod
-    def isProductDelete():
-        
-        products = Product.getAllProducts()
+    def isProductDelete(product):
+        if not Invoice.objects(products__contains=str(product['id'])) :
+            return True
 
-        productsIsDelete = []
-        for product in products :
-            if not Invoice.objects(products__contains=str(product['id'])) :
-                productsIsDelete.append(product)
-
-        return productsIsDelete
+        return False

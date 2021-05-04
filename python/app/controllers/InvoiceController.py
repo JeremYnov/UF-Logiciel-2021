@@ -48,7 +48,15 @@ class InvoiceController(Resource):
                         "name":"products",
                         "label":"Products",
                         "multiple": True,
-                        "value": ", ".join(productsId)
+                        "value": productsId
+                    },
+                    "isPaid": {
+                        "type": "multiselect",
+                        "placeholder": "IsPaid...",
+                        "name":"isPaid",
+                        "label":"IsPaid",
+                        "multiple": False,
+                        "value": str(invoice["isPaid"])
                     }
                 }
             }
@@ -84,7 +92,6 @@ class InvoiceController(Resource):
         }
         body['client'] = req['client']
         body['products'] = req['products'].split(',')
-        print(body)
 
         invoice = Invoice.create(body)
 
@@ -106,7 +113,19 @@ class InvoiceController(Resource):
         return Response(status=404)
 
     def put(self, id=""):
-        body = request.json
+        req = request.form
+        print(req)
+        body = {
+            'client': "",
+            'products': []
+        }
+        body['client'] = req['client']
+        body['products'] = req['products'].split(',')
+        if req['isPaid'] == "False":
+            body["isPaid"] = False
+        else:    
+            body["isPaid"] = True
+        print(body)
         updated = Invoice.update(id, body)
 
         if updated["count"] == 0:

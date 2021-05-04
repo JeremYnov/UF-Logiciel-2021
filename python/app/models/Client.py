@@ -23,7 +23,6 @@ class Client(db.Document):
                 data['lastName'] = client.lastName
                 data['email'] = client.email
                 data['creation'] = client.creation.strftime('%d/%m/%Y')
-                data['isDelete'] = False
 
                 results.append(data)
                 
@@ -93,10 +92,9 @@ class Client(db.Document):
         return updated
     
     @staticmethod
-    def delete(id):
+    def deleteClient(id):
         try:
-            client = Client.objects(id=id)
-            client.delete()
+            client = Client.objects().get(id=id)
             
         except Exception as error:
             client = None

@@ -10,12 +10,6 @@ class ClientController(Resource):
     def get(self, id=""):
         if str(request.url_rule) == "/api/clients":
             clients = Client.findAll()
-            clientsIsDelete = Invoice.isClientDelete()
-            
-            for client in clients :
-                for clientIsDelete in clientsIsDelete :
-                    if client == clientIsDelete :
-                        client["isDelete"] = True
             
             result = {
                 'message': "liste de tout les clients",
@@ -131,10 +125,19 @@ class ClientController(Resource):
         return jsonify(result)
     
     def delete(self, id=""):
-        client = Client.delete(id)
+        client = Client.deleteClient(id)
 
+        clientsIsDelete = Invoice.isClientDelete(client)
         result = {
-            "message": f"data client {id} delete",
-            "success": True
+            "message": f"data client {id} not delete, le client est dans un invoice",
+            "success": False,
+            "inInvoice": False
         }
+
+        if clientsIsDelete :
+            client.delete()
+            result["message"] = "la suppression a bien été faites"
+            result["success"] = True
+            result["inInvoice"] = True
+
         return jsonify(result)
