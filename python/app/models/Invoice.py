@@ -30,6 +30,7 @@ class Invoice(db.Document):
                 invoice.price += product.price
                 products.append(product)
 
+            invoice.price = round(invoice.price, 2)
             invoice.client = client
             invoice.products = products
             # invoice.validate()
