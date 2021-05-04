@@ -37,17 +37,17 @@
                   v-else-if="key == 'products'"
                   v-for="product in info.products"
                   :key="product.id"
-                  style="display: flex; align-items:center; padding: 5px"
+                  style="display: flex; align-items: center; padding: 5px"
                 >
                   <img
                     :src="product.image.url"
                     :alt="product.name"
-                    style="height: 50px; width: 50px"
+                    style="height: 50px; width: 50px; padding-right: 10px"
                   />
                   {{ product.name }}
                 </div>
-                <div v-else-if="key=='client'">
-                  <p>{{value.firstName}} {{value.lastName}}</p>
+                <div v-else-if="key == 'client'">
+                  <p>{{ value.firstName }} {{ value.lastName }}</p>
                 </div>
                 <p v-else>{{ value }}</p>
               </router-link>
@@ -68,6 +68,7 @@
         </tbody>
       </table>
     </div>
+    {{ infos }}
   </section>
 </template>
 
@@ -82,10 +83,11 @@ export default {
       keys: null,
       errored: false,
       loading: true,
+      canBeDeleted: null,
     };
   },
-  mounted: function () {
-    axios
+  mounted: async function () {
+    await axios
       .get(`/api${this.$route.path}`)
       .then((response) => {
         console.log(this.$route);
@@ -103,8 +105,13 @@ export default {
   },
   methods: {
     async deleteElement(id) {
+      // let deleted = null;
       await axios
         .delete(`/api${this.$route.path.slice(0, -1)}/${id}/delete`)
+        .then((response) => {
+          this.canBeDeleted = response.data.inInvoice;
+          console.log(response.data);
+        })
         .catch((error) => {
           console.log(error);
           this.errored = true;
@@ -112,6 +119,11 @@ export default {
         .finally(() => {
           this.loading = false;
         });
+      if (this.canBeDeleted == false) {
+        alert(
+          "This client can't be deleted because he has outstanding invoices"
+        );
+      }
       window.location.reload();
     },
   },
