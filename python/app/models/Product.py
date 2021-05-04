@@ -68,7 +68,6 @@ class Product(db.Document):
                 data["image"] = {}
                 data["image"]["url"] = f"/api/product/{str(product.id)}/image/{product.picture.filename}"
                 data["image"]["name"] = product.picture.filename
-                data["isDelete"] = False
 
                 listProducts.append(data)
             
@@ -113,7 +112,6 @@ class Product(db.Document):
     def deleteProduct(id):
         try:
             product = Product.objects().get(id=str(id))
-            product.delete()
             
         except Exception as error:
             product = None

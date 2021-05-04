@@ -145,8 +145,14 @@ class Invoice(db.Document):
                 updated["client"] = "updated"
                 updated["count"] += 1
             
-            if body["isPaid"]:
+            if body["isPaid"] == True:
                 invoice.isPaid = body["isPaid"]
+                invoice.paymentDate = datetime.now()
+                updated["isPaid"] = "updated"
+                updated["count"] += 1
+            elif body["isPaid"] == False :
+                invoice.isPaid = body["isPaid"]
+                invoice.paymentDate = None
                 updated["isPaid"] = "updated"
                 updated["count"] += 1
             
@@ -169,29 +175,15 @@ class Invoice(db.Document):
         return updated
 
     @staticmethod
-    def isClientDelete():
-        try:
-            clients = Client.findAll()
+    def isClientDelete(client):
+        if not Invoice.objects(client=client["id"]) :
+            return True
 
-            clientsIsDelete = []
-            for client in clients :
-                if not Invoice.objects(client=client["id"]) :
-                    clientsIsDelete.append(client)
-
-            
-        except Exception as error:
-            print(error)
-
-        return clientsIsDelete
+        return False
 
     @staticmethod
-    def isProductDelete():
-        
-        products = Product.getAllProducts()
+    def isProductDelete(product):
+        if not Invoice.objects(products__contains=str(product['id'])) :
+            return True
 
-        productsIsDelete = []
-        for product in products :
-            if not Invoice.objects(products__contains=str(product['id'])) :
-                productsIsDelete.append(product)
-
-        return productsIsDelete
+        return False

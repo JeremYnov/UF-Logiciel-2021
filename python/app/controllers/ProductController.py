@@ -53,12 +53,6 @@ class ProductController(Resource):
         elif str(request.url_rule) == '/api/products':
 
             products = Product.getAllProducts()
-            productsIsDelete = Invoice.isProductDelete()
-            
-            for product in products :
-                for productIsDelete in productsIsDelete :
-                    if product == productIsDelete :
-                        product["isDelete"] = True
                         
             result = {
                 "message": 'recuperation des produits',
@@ -147,13 +141,23 @@ class ProductController(Resource):
         if str(request.url_rule) == '/api/product/<string:id>/delete':
             
             product = Product.deleteProduct(id)
+            productIsDelete = Invoice.isProductDelete(product)
             result = {
-                "message": "la suppresion a bien été faites",
-                "success": True
+                "message": "le produit ne peut pas être supprimer car il est dans un ou plusieurs invoice",
+                "success": False,
+                "inInvoice" : False
             }
+
             if not product:
                 result["message"] = "le produit n'existe pas, il ne peut pas y avoir de suppresion"
                 result["success"] = False
+
+            if productIsDelete :
+                product.delete()
+                result["message"] = "la suppression a bien été faites"
+                result["success"] = True
+                result["inInvoice"] = True
+
             return jsonify(result)
 
         return Response(status=404)
