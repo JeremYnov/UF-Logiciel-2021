@@ -66,7 +66,6 @@ export default {
     };
   },
   mounted: function () {
-    console.log(this.$route);
     axios
       .get(`/api${this.$route.path}`)
       .then((response) => {

@@ -139,19 +139,19 @@ class Invoice(db.Document):
             }
 
             invoice = Invoice.objects().get(id=id)
-
             if body["client"]:
                 client = Client.objects.get(id=body['client'])
                 invoice.client = client
                 updated["client"] = "updated"
                 updated["count"] += 1
             
+            print(type(body["isPaid"]))
             if body["isPaid"] == True:
                 invoice.isPaid = body["isPaid"]
                 invoice.paymentDate = datetime.now()
                 updated["isPaid"] = "updated"
                 updated["count"] += 1
-            elif body["isPaid"] == False :
+            if body["isPaid"] == False :
                 invoice.isPaid = body["isPaid"]
                 invoice.paymentDate = None
                 updated["isPaid"] = "updated"

@@ -112,6 +112,7 @@ export default {
             const product = { id: element.id, name: element.name };
             this.productValue.push(product);
           });
+          this.value = response.data.form.products.value
         }
       })
       .catch((error) => {
@@ -190,7 +191,6 @@ export default {
         .catch(function (error) {
           console.log(error);
         });
-      console.log(response);
 
       this.$router.push({
         name: `${response.data.path.name}`,
