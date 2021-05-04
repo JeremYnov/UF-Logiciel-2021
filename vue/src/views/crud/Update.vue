@@ -59,6 +59,25 @@
             ></multiselect>
             <input type="hidden" name="products" :value="value" />
           </div>
+
+          <div
+            v-else-if="
+              info.type == 'multiselect' && info.name == 'isPaid' && isPaid
+            "
+          >
+            <label class="typo__label">{{ info.label }}</label>
+            <multiselect
+              v-model="isPaidValue"
+              tag-placeholder="Add this as new tag"
+              label="name"
+              track-by="name"
+              :placeholder="info.placeholder"
+              :options="isPaid"
+              :multiple="info.multiple"
+            ></multiselect>
+            <input type="hidden" name="isPaid" :value="isPaidValue.name" />
+          </div>
+
           <Input
             v-else
             :type="info.type"
@@ -71,7 +90,6 @@
         <button type="submit" class="submit-btn">Valider</button>
       </form>
     </div>
-    {{ infos }}
   </section>
 </template>
 
@@ -90,6 +108,8 @@ export default {
       clientValue: [],
       products: [],
       productValue: [],
+      isPaid:[{name:"True"},{name:"False"}],
+      isPaidValue:[],
       value: [],
     };
   },
@@ -108,11 +128,17 @@ export default {
             name: `${this.infos.result.client.firstName} ${this.infos.result.client.lastName}`,
           };
           this.clientValue.push(client);
+
           response.data.result.products.forEach((element) => {
             const product = { id: element.id, name: element.name };
             this.productValue.push(product);
           });
           this.value = response.data.form.products.value
+
+          const isPaid = {
+            name: response.data.form.isPaid.value
+          }
+          this.isPaidValue.push(isPaid)
         }
       })
       .catch((error) => {
