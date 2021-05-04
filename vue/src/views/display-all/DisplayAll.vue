@@ -68,7 +68,6 @@
         </tbody>
       </table>
     </div>
-    {{ infos }}
   </section>
 </template>
 
@@ -121,7 +120,7 @@ export default {
         });
       if (this.canBeDeleted == false) {
         alert(
-          "This client can't be deleted because he has outstanding invoices"
+          "This element can't be deleted because he has outstanding invoices"
         );
       }
       window.location.reload();

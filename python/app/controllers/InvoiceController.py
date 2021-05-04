@@ -56,7 +56,7 @@ class InvoiceController(Resource):
                         "name":"isPaid",
                         "label":"IsPaid",
                         "multiple": False,
-                        "value": invoice["isPaid"]
+                        "value": str(invoice["isPaid"])
                     }
                 }
             }
@@ -121,7 +121,11 @@ class InvoiceController(Resource):
         }
         body['client'] = req['client']
         body['products'] = req['products'].split(',')
-        body["isPaid"] = req['isPaid']
+        if req['isPaid'] == "False":
+            body["isPaid"] = False
+        else:    
+            body["isPaid"] = True
+        print(body)
         updated = Invoice.update(id, body)
 
         if updated["count"] == 0:

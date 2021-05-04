@@ -50,7 +50,6 @@
         </tbody>
       </table>
     </div>
-    {{ info }}
   </section>
 </template>
 
