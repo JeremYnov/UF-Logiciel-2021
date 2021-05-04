@@ -162,7 +162,7 @@ class Invoice(db.Document):
                 invoice.price = 0
                 for productId in body['products']:
                     product = Product.objects.get(id=productId)
-                    invoice.price += product.price
+                    invoice.price += round(product.price,2)
                     products.append(product)
                 invoice.products = products
                 updated["products"] = "updated"
